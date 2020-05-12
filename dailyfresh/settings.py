@@ -44,7 +44,15 @@ INSTALLED_APPS = [
     'cart',
     'goods',
     'order',
+    'tinymce',
 ]
+
+TINYMCE_DEFAULT_CONFIG = {
+    'theme': 'advanced',
+    'width': 600,
+    'height': 400
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,6 +107,9 @@ DATABASES = {
     }
 }
 
+# django认证系统使用的模型类
+# 使用自定义的用户表作为认证系统使用的认证用户表，后面创建的管理员账户也会在这个新表中创建
+AUTH_USER_MODEL = 'user.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

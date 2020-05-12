@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('tinymce/', include('tinymce.urls')),
     # 通过名称空间添加URL反向解析
     path('user/', include(('user.urls', 'users'), namespace='user')),
     path('cart/', include(('cart.urls', 'cart'), namespace='cart')),

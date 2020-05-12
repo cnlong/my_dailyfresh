@@ -1,3 +1,47 @@
 from django.db import models
+from db.base_model import BaseModel
+# 导入django认证的基类，无需自行编写认证的方法等
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
+
+class User(AbstractUser, BaseModel):
+    """用户模型类"""
+
+    class Meta:
+        db_table = "df_user"
+        verbose_name = "用户"
+        verbose_name_plural = verbose_name
+
+
+class AddressManager(models.Manager):
+    """地址模型类的管理器类，用于管理地址模型类"""
+    # 1.改变原有的查询的结果集：all()
+    # 2.封装方法，操作模型类对应的数据表
+    def get_default_address(self, user):
+        """获取用户的默认收货地址"""
+        try:
+            # self.model 获取self对象所在的模型类
+            address = self.model.objects.get(user=user, id_default=True)
+        except self.model.DoesNotExist:
+            # 不存在默认收货地址
+            address = None
+        return address
+
+
+class Address(BaseModel):
+    """地址模型类"""
+    user = models.ForeignKey('User', verbose_name="所属账户", on_delete=models.CASCADE)
+    receiver = models.CharField(max_length=20, verbose_name="收件人")
+    addr = models.CharField(max_length=256, verbose_name="收件地址")
+    zip_code = models.CharField(max_length=6, null=True, verbose_name="邮政编码")
+    phone = models.CharField(max_length=11, verbose_name="联系电话")
+    is_default = models.BooleanField(default=False, verbose_name="是否默认")
+
+    # 自定义一个模型管理器类对象
+    objects = AddressManager()
+
+    class Meta:
+        db_table = "db_address"
+        verbose_name = "地址"
+        verbose_name_plural = verbose_name
