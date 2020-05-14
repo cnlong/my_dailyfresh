@@ -14,15 +14,15 @@ $(function () {
 
 	$('#pwd').blur(function () {
 		check_pwd();
-	})
+	});
 
 	$('#cpwd').blur(function () {
 		check_cpwd();
-	})
+	});
 
 	$('#email').blur(function () {
 		check_email();
-	})
+	});
 
 	$('#allow').click(function () {
 		/*根据勾选框的状态进行判断*/
@@ -93,7 +93,7 @@ $(function () {
 	}
 
 	function check_email() {
-		var re = /^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$/;
+		var re = /^[a-z0-9][\w.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$/;
 
 		if (re.test($('#email').val()))
 		{
@@ -108,6 +108,22 @@ $(function () {
 		}
 	}
 
-	$('#r')
+	// 表单提交的时候，触发所有的检查函数
+	$('.reg_form').submit(function () {
+        check_user_name();
+        check_pwd();
+        check_cpwd();
+        check_email();
 
-})
+        /*所有检查函数执行完成，并且所有的error_xx值为false，代表检查正确*/
+        if (error_name == false && error_password == false && error_check_password == false && error_email == false && error_check ==false)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    });
+
+});
