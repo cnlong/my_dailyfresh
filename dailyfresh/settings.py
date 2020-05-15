@@ -149,3 +149,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+# 发送邮件的邮箱地址
+EMAIL_HOST_USER = 'l17625924672@163.com'
+# 密码
+EMAIL_HOST_PASSWORD = 'cal09160829'
+# 收件人看到的发件人
+EMAIL_FROM = 'python<itcast@163.com>'

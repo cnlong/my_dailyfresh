@@ -20,7 +20,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),
     # 通过名称空间添加URL反向解析
-    path('user/', include(('user.urls', 'users'), namespace='user')),
+    path('user/', include(('user.urls', 'user'), namespace='user')),
     path('cart/', include(('cart.urls', 'cart'), namespace='cart')),
     path('order/', include(('order.urls', 'order'), namespace='order')),
     path('', include(('goods.urls', 'goods'), namespace='goods')),  # 首页
