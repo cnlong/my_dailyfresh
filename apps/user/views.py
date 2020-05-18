@@ -9,6 +9,8 @@ from itsdangerous import SignatureExpired
 import re
 from django.conf import settings
 from django.core.mail import send_mail
+# 使用celery任务发送邮件
+from celery_tasks.tasks import send_register_active_email
 
 # Create your views here.
 
@@ -166,20 +168,25 @@ class RegisterView(View):
         serializer = Serializer(settings.SECRET_KEY, 3600)
         # 定义加密的信息，使用之前创建好的用户的id
         info = {'confirm': user.id}
-        # 加密
-        token = serializer.dumps(info)
+        # 加密，返回的是字节流的数据，转换为字符串
+        token = serializer.dumps(info).decode('utf-8')
+
 
         # 发送邮件
-        # 邮件主题
-        subject = '天天生鲜欢迎信息'
-        # 邮件正文
-        message = '邮件正文'
-        # 发件人
-        sender = settings.EMAIL_FROM
-        # 收件人列表
-        receiver = [email]
+        # # 邮件主题
+        # subject = '天天生鲜欢迎信息'
+        # # 邮件正文
+        # message = ''
+        # # 因为包含html的内容，需要通过html_message进行参数传递
+        # html_message = '<h1>%s, 欢迎您成为天天生鲜注册会员</h1>请点击下面链接激活您的账户<br/><a href="http://127.0.0.1:8000/user/active/%s">http://127.0.0.1:8000/user/active/%s</a>' %(username, token, token)
+        # # 发件人
+        # sender = settings.EMAIL_FROM
+        # # 收件人列表
+        # receiver = [email]
+        # send_mail(subject, message, sender, receiver, html_message=html_message)
+        # 使用celery任务发送邮件
+        send_register_active_email.delay(email, username, token)
 
-        send_mail(subject, message, sender, receiver)
 
         # 返回应答，跳转到首页
         # 首页后续修改，先返回一个页面
@@ -207,6 +214,7 @@ class ActiveView(View):
         except SignatureExpired as e:
             # 激活链接已过期
             return HttpResponse('链接已过期')
+
 
 
 # /user/login

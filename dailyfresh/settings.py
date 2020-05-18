@@ -157,6 +157,10 @@ EMAIL_PORT = 25
 # 发送邮件的邮箱地址
 EMAIL_HOST_USER = 'l17625924672@163.com'
 # 密码
-EMAIL_HOST_PASSWORD = 'cal09160829'
-# 收件人看到的发件人
-EMAIL_FROM = 'python<itcast@163.com>'
+EMAIL_HOST_PASSWORD = 'ALWDSIPWULVBOGWY'
+EMAIL_USE_TLS = True
+# 收件人看到的发件人，必须和EMAIL_HOST_USER一致，否则发送邮件会报553错误
+EMAIL_FROM = EMAIL_HOST_USER
+
+
+
