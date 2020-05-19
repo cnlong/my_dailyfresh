@@ -3,10 +3,10 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 # worker端的环境初始化操作，任务发出者无需操作
-# import os
-# import django
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dailyfresh.settings')
-# django.setup()
+import os
+import django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dailyfresh.settings')
+django.setup()
 
 # 创建一个celery类的实例对象，名称自行设定,broker配置redis
 app = Celery('celery_tasks.tasks', broker='redis://192.168.6.160:6379/8')

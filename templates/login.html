@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<!---加载静态文件目录--->
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>天天生鲜-登录</title>
+</head>
+<body>
+<!--整个页面分为三大块-->
+<!--顶部Logo-->
+<div class="login_top clearfix">
+    <a href="index.html" class="login_logo"><img src="{% static 'images/logo02.png'%}"></a>
+</div>
+<!--中间登录-->
+<div class="login_form_bg">
+    <div class="login_form_wrap clearfix">
+        <div class="login_banner fl"></div>
+        <div class="slogan fl">日夜兼程 · 急速送达</div>
+        <div class="login_form fr">
+            <div class="login_title clearfix">
+                <h1>用户登录</h1>
+                <a href="#">立即注册</a>
+            </div>
+            <div class="form_input">
+                <form method="post">
+                    <input type="text" name="username" class="name_input" placeholder="请输入用户名">
+                    <div class="user_error">输入错误</div>
+                    <input type="password" name="pwd" class="pass+input" placeholder="请输入密码">
+                    <div class="pwd_error">输入错误</div>
+                    <div class="more_input clearfix">
+                        <input type="checkbox" name="">
+                        <label>记住用户名</label>
+                        <a href="#">忘记密码</a>
+                    </div>
+                    <input type="submit" name="" value="登录" class="input_submit">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--底部公司信息-->
+<div class="footer">
+    <div class="foot_link">
+        <a href="#">关于我们</a>
+        <span>|</span>
+        <a href="#">联系我们</a>
+        <span>|</span>
+        <a href="#">招聘人才</a>
+        <span>|</span>
+        <a href="#">友情链接</a>
+        <span>|</span>
+    </div>
+    <p>CopyRight © 2020 南京天天生鲜信息技术有限公司 All Rights Reserved</p>
+    <p>电话：010-8888888    京ICP备888888号</p>
+</div>
+</body>
+</html>

@@ -222,4 +222,4 @@ class LoginView(View):
     """登录页类视图"""
     def get(self, request):
         """显示登录页"""
-        return HttpResponse('登录页')
+        return render(request, 'login.html')
