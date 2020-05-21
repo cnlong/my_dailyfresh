@@ -5,6 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>天天生鲜-登录</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
 </head>
 <body>
 <!--整个页面分为三大块-->
@@ -24,9 +27,10 @@
             </div>
             <div class="form_input">
                 <form method="post">
+<!--                    不设置表单action，默认提交的地址为当前url地址-->
                     <input type="text" name="username" class="name_input" placeholder="请输入用户名">
                     <div class="user_error">输入错误</div>
-                    <input type="password" name="pwd" class="pass+input" placeholder="请输入密码">
+                    <input type="password" name="pwd" class="pass_input" placeholder="请输入密码">
                     <div class="pwd_error">输入错误</div>
                     <div class="more_input clearfix">
                         <input type="checkbox" name="">
