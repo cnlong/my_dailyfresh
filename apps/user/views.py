@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from .models import User
 from django.views import View
@@ -11,6 +11,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 # 使用celery任务发送邮件
 from celery_tasks.tasks import send_register_active_email
+# 用户认证
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -154,7 +156,7 @@ class RegisterView(View):
         # 进行业务处理，进行用户注册
         # 通过User模型类存储创建的新用户
         # 因为是继承自Django自身的认证系统，所以用户数据写入直接参考其方法即可
-        user = User.objects.create_user(username, password, email)
+        user = User.objects.create_user(username=username, password=password, email=email)
         # 刚刚注册好的用户，不能直接激活状态，自行改为未激活状态
         user.is_active = 0
         user.save()
@@ -223,3 +225,31 @@ class LoginView(View):
     def get(self, request):
         """显示登录页"""
         return render(request, 'login.html')
+
+    def post(self, request):
+        """接收表单请求，登录校验"""
+        # 接收数据
+        username = request.POST.get('username')
+        password = request.POST.get('pwd')
+        # 校验数据，检验是否提交了用户名或者密码
+        # all函数判断给定的可迭代对象是否都为True
+        if not all([username, password]):
+            return render(request, 'login.html', {'errmg': '数据不完整'})
+        # 业务校验：登录校验
+        # 根据用户名及密码验证，返回验证结果
+        user = authenticate(username=username, password=password)
+        # 验证通过返回一个User对象，即从数据库中查询出来的对象，验证失败返回None
+        if user is not None:
+            # 用户名密码验证通过，再判断用户是否激活
+            if user.is_active:
+                # 用户已激活
+                # 记录用户的登录状态,将用户ID保存至当前session中
+                login(request, user)
+                # 跳转到首页
+                return redirect(reverse('goods:index'))
+            else:
+                # return render(request, 'login.html', {'errmsg': '用户未激活'})
+                return HttpResponse('用户未激活')
+        else:
+            return render(request, 'login.html', {'errmsg': '用户名或密码错误'})
+        # 返回应答
