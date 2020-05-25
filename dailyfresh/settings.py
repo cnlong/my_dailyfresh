@@ -87,6 +87,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'dailyfresh.wsgi.application'
 
+# # 使用django-rediss-sessions将session存储到redis
+# SESSION_ENGINE = 'redis_sessions.sesssion'
+# SESSION_REDIS_HOST = '192.168.6.160'
+# SESSION_REDIS_PORT = 6379
+# SESSION_REDIS_DB = 2
+# SESSION_REDIS_PASSWORD = ''
+# SESSION_REDIS_PREFIX = 'session'
+
+# Django的缓存配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://192.168.6.160:6379/9",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }}
+
+# 设置缓存，默认缓存存储在本机的网络存储中，但是前面设置了后端缓存的配置，这里就会存储到前面设置的缓存中
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases

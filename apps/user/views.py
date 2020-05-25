@@ -224,7 +224,14 @@ class LoginView(View):
     """登录页类视图"""
     def get(self, request):
         """显示登录页"""
-        return render(request, 'login.html')
+        # 重新登录的时候，判断上次登录是否记住用户名
+        if 'username' in request.COOKIES:
+            username = request.COOKIES.get('username')
+            checked = 'checked'
+        else:
+            username = ''
+            checked = ''
+        return render(request, 'login.html', {'username': username, 'checked': checked})
 
     def post(self, request):
         """接收表单请求，登录校验"""
@@ -245,8 +252,18 @@ class LoginView(View):
                 # 用户已激活
                 # 记录用户的登录状态,将用户ID保存至当前session中
                 login(request, user)
+                response = redirect(reverse('goods:index'))
+                # 判断是否需要记住用户名，根据勾选框的值
+                remember = request.POST.get('remember')
+                if remember == 'on':
+                    print('设置cookies')
+                    # 勾选了，则返回on，并向返回页面中传入cookie
+                    response.set_cookie('username', username, max_age=7*24*3600)
+                else:
+                    # 不勾选，则删除该cookie
+                    response.delete_cookie('username')
                 # 跳转到首页
-                return redirect(reverse('goods:index'))
+                return response
             else:
                 # return render(request, 'login.html', {'errmsg': '用户未激活'})
                 return HttpResponse('用户未激活')
