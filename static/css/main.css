@@ -152,10 +152,13 @@ html,body{
 }
 
 /* 页面底部样式 */
+/*.no-mp{*/
+/*    margin-top: 0;*/
+/*}*/
 
 .footer{
     border-top: 2px solid #42ad46;
-    margin: 30px 0;
+    margin: 0;
 }
 
 .foot_link{
