@@ -341,3 +341,344 @@ html,body{
     font-family: 'Microsoft Yahei';
     cursor: pointer;
 }
+
+/* 购物车*/
+/*顶部*/
+.header_con{
+    background-color: #f7f7f7;
+    height: 29px;
+    border-bottom: 1px solid  #dddddd;
+}
+
+.header {
+    width: 1200px;
+    height: 29px;
+    margin: 0 auto;
+}
+
+.welcome,.login_info,.login_btn,.user_link{
+    line-height: 29px;
+}
+
+.login_info{
+    display: none;
+}
+
+.login_info em{
+    color: #ff8800;
+}
+
+.login_btn a,.user_link a{
+    color: #666;
+}
+
+.login_btn a:hover,.user_link a:hover{
+    color: #ff8800;
+}
+
+.login_btn span,.user_link span{
+    color: #cecece;
+    margin: 0 10px;
+
+}
+
+/*订单详情页样式*/
+.search_bar{
+    width: 1200px;
+    height: 115px;
+    margin: 0 auto;
+}
+
+.logo{
+    width: 150px;
+    height: 59px;
+    margin: 29px 0 0 17px;
+}
+
+.sub_page_name{
+    font-size: 18px;
+    color: #666;
+    margin: 50px 0 0 20px;
+}
+
+.search_con{
+    width: 616px;
+    height: 38px;
+    border: 1px solid #37ab40;
+    margin: 34px 0 0 124px;
+    background: url("../images/icons.png") 10px -338px no-repeat;
+}
+
+.search_con .input_text{
+    width: 470px;
+    height: 34px;
+    border: 0px;
+    margin: 2px 0 0 36px;
+    outline: none;
+    font-size: 12px;
+    color: #737272;
+    font-family:'Microsoft Yahei';
+}
+
+.search_con .input_btn{
+    width: 100px;
+    height: 38px;
+    background-color: #37ab40;
+    border: 0px;
+    font-size: 14px;
+    color: #fff;
+    font-family:'Microsoft Yahei';
+    outline: none;
+    cursor: pointer;
+}
+
+/*中间订单详情*/
+/*全部商品*/
+.total_count{
+    width: 1200px;
+    margin: 0 auto;
+    height: 40px;
+    line-height: 40px;
+    font-size: 14px;
+}
+
+.total_count em{
+    font-size: 16px;
+    color: #ff4200;
+    margin: 0 5px;
+}
+
+/*订单详情头部*/
+.cart_list_th{
+    width: 1198px;
+    border: 1px solid #ddd;
+    background-color: #f7f7f7;
+    margin: 0 auto;
+}
+
+.cart_list_th li{
+    height: 40px;
+    line-height: 40px;
+    float: left;
+    text-align: center;
+}
+
+.cart_list_th .col01{
+    width: 26%;
+}
+
+.cart_list_th .col02{
+    width: 16%;
+}
+
+.cart_list_th .col03{
+    width: 13%;
+}
+
+.cart_list_th .col04{
+    width: 12%;
+}
+
+.cart_list_th .col05{
+    width: 15%;
+}
+
+.cart_list_th .col06{
+    width: 18%;
+}
+
+/*订单详情产品信息*/
+.cart_list_td {
+    width: 1198px;
+    border: 1px solid #ddd;
+    background-color: #edfff9;
+    margin: 0 auto;
+    margin-top: -1px;
+}
+
+.cart_list_td li{
+    height: 120px;
+    line-height: 120px;
+    float: left;
+    text-align: center;
+}
+
+.cart_list_td .col01{
+    width: 4%;
+}
+
+.cart_list_td .col02{
+    width: 12%;
+}
+
+.cart_list_td .col03{
+    width: 10%;
+}
+
+.cart_list_td .col04{
+    width: 16%;
+}
+
+.cart_list_td .col05{
+    width: 13%;
+}
+
+.cart_list_td .col06{
+    width: 12%;
+}
+
+.cart_list_td .col07{
+    width: 15%;
+}
+
+.cart_list_td .col08{
+    width: 18%;
+}
+
+.cart_list_td .col02 img{
+    width: 100px;
+    height: 100px;
+    border: 1px solid #ddd;
+    display: block;
+    margin: 10px auto 0;
+}
+
+.cart_list_td .col03{
+    height: 48px;
+    text-align: left;
+    line-height: 24px;
+    margin-top: 38px;
+}
+
+.cart_list_td .col03 em{
+    color: #999;
+}
+
+.cart_list_td .col03 a{
+    color: #666;
+}
+
+.cart_list_td .col06 .num_add{
+    width: 98px;
+    height: 28px;
+    border: 1px solid #ddd;
+    margin: 40px auto 0;
+}
+
+.cart_list_td .col06 .num_add a{
+    width:  29px;
+    height: 28px;
+    line-height: 28px;
+    background-color: #f3f3f3;
+    font-size: 14px;
+    color: #666;
+}
+
+.cart_list_td .col06 .num_add input{
+    width: 38px;
+    height: 28px;
+    text-align: center;
+    line-height: 30px;
+    border: 0px;
+    display: block;
+    float: left;
+    outline: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+/*订单结算*/
+.settlements{
+    width: 1198px;
+    height: 78px;
+    border: 1px solid #ddd;
+    background-color: #fff4e8;
+    margin: -1px auto 0;
+}
+
+.settlements li{
+    line-height: 78px;
+    float: left;
+}
+
+.settlements .col01{
+    width: 4%;
+    text-align: center;
+}
+
+.settlements .col02{
+    width: 12%;
+}
+
+.settlements .col03{
+    width: 69%;
+    height: 48px;
+    line-height: 28px;
+    text-align: right;
+    margin-top: 10px;
+}
+
+.settlements .col03 span{
+    color: #ff0000;
+    padding-right: 5px;
+}
+
+.settlements .col03 em{
+    color: #ff3d3d;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.settlements .col03 b{
+    color: #ff0000;
+    font-size: 14px;
+    /*padding: 0 5px;*/
+    margin: 0 5px;
+}
+
+.settlements .col04{
+    width: 14%;
+    text-align: center;
+    float: right;
+}
+
+.settlements .col04 a{
+    height: 78px;
+    background-color: #ff3d3d;
+    text-align: center;
+    line-height: 78px;
+    color: #fff;
+    font-size: 24px;
+    display: block;
+}
+
+/*商品详情页样式*/
+/*顶部样式几个页面一样，所以直接公用*/
+/*中间logo、搜索框和其他页面公用，单写购物车的样式即可*/
+.guest_cart {
+    width: 200px;
+    height: 40px;
+    margin-top: 34px;
+}
+
+.guest_cart .cart_name{
+    width: 158px;
+    height: 38px;
+    line-height: 38px;
+    border: 1px solid #ddd;
+    background: url("../images/icons.png") 13px -300px no-repeat;
+    font-size: 14px;
+    color: #37ab40;
+    text-indent: 56px;
+}
+
+.guest_cart .goods_count{
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff8800;
+}
