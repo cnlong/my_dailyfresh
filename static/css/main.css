@@ -843,3 +843,259 @@ html,body{
     color: #666;
     padding: 0 5px;
 }
+
+/*商品详情*/
+.goods_detail_con{
+    width: 1198px;
+    height: 398px;
+    border: 1px solid #ededed;
+    margin: 0 auto 20px;
+}
+
+.goods_detail_pic{
+    width: 350px;
+    height: 350px;
+    margin: 24px 0 0 24px;
+}
+
+.goods_detail_list{
+    width: 730px;
+    height: 350px;
+    margin: 24px 24px 0 0 ;
+}
+
+.goods_detail_list h3{
+    font-size: 24px;
+    line-height: 24px;
+    color: #666;
+    font-weight: normal;
+}
+
+.goods_detail_list p{
+    color: #666;
+    line-height: 40px;
+}
+
+.prize_bar{
+    height: 72px;
+    background-color: #fff5f5;
+    line-height: 72px;
+}
+
+.prize_bar .show_prize{
+    font-size: 20px;
+    color: #ff3e3e;
+    padding-left: 20px;
+}
+
+.prize_bar .show_prize em{
+    font-style: normal;
+    font-size: 36px;
+    padding-left: 10px;
+}
+
+.prize_bar .show_unit{
+    padding-left: 150px;
+}
+
+.goods_num{
+    height: 52px;
+    margin-top: 19px;
+}
+
+.goods_num .num_name{
+    width: 70px;
+    height: 52px;
+    line-height: 52px;
+}
+
+.goods_num .num_add{
+    width: 75px;
+    height: 50px;
+    border: 1px solid #ddd;
+}
+
+.goods_num .num_add input{
+    width: 49px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    border: 0px;
+    outline: none;
+    font-size: 14px;
+    color: #666;
+}
+
+.goods_num .num_add .add,.goods_num .num_add .minus{
+    width: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-left: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    color: #666;
+    font-size: 14px;
+}
+
+.goods_num .num_add .minus{
+     border-bottom: 0px;
+}
+
+.total{
+    height: 35px;
+    line-height: 35px;
+    margin-top: 25px;
+}
+
+.total em{
+    font-style: normal;
+    color: #ff3e3e;
+    font-size: 18px;
+}
+
+.operate_btn{
+    height: 40px;
+    margin-top: 35px;
+    font-size: 0;
+    position: relative;
+}
+
+.operate_btn .buy_btn,.operate_btn .add_cart{
+    display: inline-block;
+    width: 178px;
+    height: 38px;
+    border: 1px solid #c40000;
+    font-size: 14px;
+    color: #c40000;
+    line-height: 38px;
+    text-align: center;
+    background-color: #ffeded;
+}
+
+.operate_btn .add_cart{
+    background-color: #c40000;
+    color: #fff;
+    margin-left: 10px;
+    position: relative;
+    z-index: 10;
+}
+
+/*添加动作的圆点*/
+.add_jump{
+    width: 20px;
+    height: 20px;
+    background-color: #c40000;
+    position: absolute;
+    left: 268px;
+    top: 10px;
+    border-radius: 50%;
+    z-index: 9;
+    display: none;
+}
+
+/*新品推荐、评论*/
+.main_wrap{
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.l_wrap{
+    width: 200px;
+}
+
+.r_wrap{
+    width: 980px;
+}
+
+.new_goods{
+    border: 1px solid #ededed;
+    border-top: 2px solid #37ab40;
+    padding-bottom: 10px;
+}
+
+.new_goods h3{
+    height: 33px;
+    line-height: 33px;
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #ededed;
+    font-size: 14px;
+    font-weight: normal;
+    text-indent: 10px;
+}
+
+.new_goods ul{
+    width: 160px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.new_goods li{
+    border-bottom: 1px solid #ededed;
+    /*margin-bottom: -1px;*/
+}
+
+.new_goods li img{
+    display: block;
+    width: 150px;
+    height: 150px;
+    margin: 10px auto;
+}
+
+.new_goods li h4{
+    width: 160px;
+    margin: 0 auto;
+}
+
+.new_goods li h4 a{
+    font-weight: normal;
+    color: #666;
+    display: block;
+    width: 160px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.new_goods li .prize{
+    font-size: 14px;
+    color: #da260e;
+    margin: 10px auto;
+}
+
+.detail_tab{
+    height: 35px;
+    border-bottom: 1px solid #37ab40;
+}
+
+.detail_tab li{
+    height: 34px;
+    line-height: 34px;
+    padding: 0 30px;
+    font-size: 14px;
+    color: #333;
+    float: left;
+    border: 1px solid #e8e8e8;
+    border-bottom: 0px;
+    cursor: pointer;
+    background-color: #faf8f8;
+}
+
+.detail_tab .active{
+    border-top: 2px solid #37ab40;
+    position: relative;
+    background-color: #fff;
+    border-left: 1px solid #37ab40;
+    border-right: 1px solid #37ab40;
+    height: 35px;
+    /*top: -1px;*/
+}
+
+.tab_content dt{
+    margin-top: 10px;
+    font-size: 16px;
+    color: #044d39;
+}
+
+.tab_content dd{
+    line-height: 24px;
+    margin-top: 5px;
+}
