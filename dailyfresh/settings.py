@@ -126,7 +126,8 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': '192.168.6.160',
-        'PORT': '3306'
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
@@ -185,5 +186,6 @@ EMAIL_USE_TLS = True
 # 收件人看到的发件人，必须和EMAIL_HOST_USER一致，否则发送邮件会报553错误
 EMAIL_FROM = EMAIL_HOST_USER
 
-
+# 设置未登录用户访问用户中心，默认跳转路径
+LOGIN_URL = '/user/login'
 

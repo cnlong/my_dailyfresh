@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
-from .models import User
+from .models import User, Address
 from django.views import View
 # 用户信息加解密的类
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -13,6 +13,10 @@ from django.core.mail import send_mail
 from celery_tasks.tasks import send_register_active_email
 # 用户认证
 from django.contrib.auth import authenticate, login
+# 用户登录验证
+from django.contrib.auth.mixins import LoginRequiredMixin
+# 通过验证的用户退出函数
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -252,7 +256,11 @@ class LoginView(View):
                 # 用户已激活
                 # 记录用户的登录状态,将用户ID保存至当前session中
                 login(request, user)
-                response = redirect(reverse('goods:index'))
+                # 登录成功后，获取登录后跳转的地址，这个值再直接登录页面没有，只有从用户中心跳转过来的登录页面才有
+                # 表单数据由POST提交，url参数由GET提交
+                # 如果直接登录，获取到的值为none,所以需要给一个默认值，默认跳转到首页
+                next_url = request.GET.get('next', reverse('goods:index'))
+                response = redirect(next_url)
                 # 判断是否需要记住用户名，根据勾选框的值
                 remember = request.POST.get('remember')
                 if remember == 'on':
@@ -272,28 +280,95 @@ class LoginView(View):
         # 返回应答
 
 
+class LogoutView(View):
+    """退出登录"""
+    # 退出登录，清除用户的所有会话数据
+    def get(self, request):
+        logout(request)
+        # 退出之后跳转到首页
+        return redirect(reverse('goods:index'))
+
+
 # /user
-class UserInfoView(View):
+class UserInfoView(LoginRequiredMixin, View):
     """用户中心-信息页"""
     def get(self, request):
         """显示"""
+        # request.user
+        # 除了给模板传递模板变量之外，django框架会把request.user也传给模板
+        # 就可以直接在模板文件中判断该属性，然后改变模板文件的样式
+        # 如果当前没有用户登录，这个属性将会被设置为 AnonymousUser
+        # 如果当前有用户登录，这个属性将会被设置为User 实例
+        # request.user.is_authenticated判断用户是否验证，未登录则为false，登录则为true
+
+        # 1.获取用户的个人信息
+
+        # 2.获取用户的历史浏览记录
+
         # 传入page=user，模板文件根据这个变量，设置链接的class属性
         return  render(request, 'user_center_info.html', {'page': 'user'})
 
 
 # /user/order
-class UserOrderView(View):
+class UserOrderView(LoginRequiredMixin, View):
     """用户中心-订单页"""
     def get(self, request):
         """显示"""
+        # 1.获取用户的订单信息
+
         # 传入page=order，模板文件根据这个变量，设置链接的class属性
         return  render(request, 'user_center_order.html', {'page': 'order'})
 
 
 # /user/address
-class AddressView(View):
+class AddressView(LoginRequiredMixin, View):
     """用户中心-地址页"""
     def get(self, request):
         """显示"""
+        # 1.获取用户的默认收货地址
+        # 获取登录后的用户对象
+        user = request.user
+        # 根据用户对象，查询该对象的默认收货地址，如果存在收货地址则返回，不存在，则设置为NONE
+        try:
+            address = Address.objects.get(user=user, is_default=True)
+        except Address.DoesNotExist:
+            address = None
         # 传入page=address，模板文件根据这个变量，设置链接的class属性
-        return render(request, 'user_center_site.html', {'page': 'address'})
+        return render(request, 'user_center_site.html', {'page': 'address', 'address': address})
+
+    def post(self, request):
+        """地址页通过post表单提交地址"""
+        # 1.接收数据
+        receiver = request.POST.get('receiver')
+        addr = request.POST.get('addr')
+        zip_code = request.POST.get('zip_code')
+        phone = request.POST.get('phone')
+        # 2.校验数据
+        # 判断传入的数据是否为空，邮编可为空，所以不做校验
+        if not all([receiver, addr, phone]):
+            return render(request, 'user_center_site.html', {'errmsg': '数据不完整'})
+        # 校验手机号
+        if not re.match(r'^1[3|4|5|6|7|8][0-9]{9}$', phone):
+            return render(request, 'user_center_site.html', {'errmsg': '手机格式不正确'})
+        # 3.业务处理，地址添加
+        # 如果用户已存在默认收货地址，添加的地址不作为默认收货地址，否则作为默认收货地址
+        # 获取登录后的用户对象
+        user = request.user
+        # 根据用户对象，查询该对象的默认收货地址，如果存在收货地址则返回，不存在，则设置为NONE
+        try:
+            address = Address.objects.get(user=user, is_default=True)
+        except Address.DoesNotExist:
+            address = None
+
+        # 根据上述查询的结果，决定新增的地址是否为默认收货地址
+        if address:
+            is_default = False
+        else:
+            is_default = True
+
+        # 添加地址到地址表中
+        Address.objects.create(user=user, receiver=receiver, addr=addr,
+                               zip_code=zip_code, phone=phone, is_default=is_default)
+
+        # 4.返回应答，刷新地址页面
+        return redirect(reverse('user:address'))

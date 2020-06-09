@@ -1,6 +1,7 @@
 from django.urls import path, re_path
 from . import views
 from .views import *
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('register', RegisterView.as_view(), name='register'),  # 注册
@@ -8,6 +9,7 @@ urlpatterns = [
     # 带参数的url，个人觉得还是re_path还有一些
     re_path(r'^active/(?P<token>.*)$', ActiveView.as_view(), name='active'),
     path('login', LoginView.as_view(), name='login'),  # 登录
+    path('logout', LogoutView.as_view(), name='logout'),  # 退出
     path('register', views.register, name='register'),  # 注册
     # path('register_handle', views.register_handle, name='register_handle'),  # 注册处理
     path('', UserInfoView.as_view(), name='user'),  # 用户中心-信息页
