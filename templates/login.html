@@ -1,15 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<!---加载静态文件目录--->
+{% extends 'base.html' %}
 {% load staticfiles %}
-<head>
-    <meta charset="UTF-8">
-    <title>天天生鲜-登录</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    {% block title %}天天生鲜-登录{% endblock title %}
+    {% block topfiles %}
     <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
-</head>
-<body>
+    {% endblock topfiles %}
+
+{% block header_con %}{% endblock header_con %}
+{% block search_bar %}{% endblock search_bar %}
+{% block body %}
 <!--整个页面分为三大块-->
 <!--顶部Logo-->
 <div class="login_top clearfix">
@@ -45,20 +43,4 @@
     </div>
 </div>
 {{ errmsg }}
-<!--底部公司信息-->
-<div class="footer">
-    <div class="foot_link">
-        <a href="#">关于我们</a>
-        <span>|</span>
-        <a href="#">联系我们</a>
-        <span>|</span>
-        <a href="#">招聘人才</a>
-        <span>|</span>
-        <a href="#">友情链接</a>
-        <span>|</span>
-    </div>
-    <p>CopyRight © 2020 南京天天生鲜信息技术有限公司 All Rights Reserved</p>
-    <p>电话：010-8888888    京ICP备888888号</p>
-</div>
-</body>
-</html>
+{% endblock body %}

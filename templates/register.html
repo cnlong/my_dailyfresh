@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<!---加载静态文件目录--->
-{% load staticfiles %}
-<head>
-    <meta charset="UTF-8">
-    <title>天天生鲜-注册</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+{% extends 'base.html' %}
+    <!--静态文件需要重新加载-->
+    {% load staticfiles %}
+    {% block title %}天天生鲜-注册{% endblock title %}
+    {% block topfiles %}
     <script type="text/javascript" src="{% static 'js/jquery-1.12.4.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/register.js' %}"></script>
-</head>
-<body>
+    {% endblock topfiles %}
+
+<!--清除父模板中有，而登录页不需要的样式块-->
+{% block header_con %}{% endblock header_con %}
+{% block search_bar %}{% endblock search_bar %}
+
+<!--重写主体块-->
+{% block body %}
 <div class="register_con">
     <div class="l_con fl">
         <a class="reg_logo"><img src="{% static 'images/logo02.png' %}" alt="首页图片"></a>
@@ -60,19 +62,4 @@
         </div>
     </div>
 </div>
-   <div class="footer no-mp">
-        <div class="foot_link">
-            <a href="#">关于我们</a>
-            <span>|</span>
-            <a href="#">联系我们</a>
-            <span>|</span>
-            <a href="#">招聘人才</a>
-            <span>|</span>
-            <a href="#">友情链接</a>
-            <span>|</span>
-        </div>
-        <p>CopyRight © 2020 南京天天生鲜信息技术有限公司 All Rights Reserved</p>
-        <p>电话：010-8888888    京ICP备8888888号</p>
-    </div>
-</body>
-</html>
+{% endblock body %}

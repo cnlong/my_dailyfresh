@@ -270,3 +270,30 @@ class LoginView(View):
         else:
             return render(request, 'login.html', {'errmsg': '用户名或密码错误'})
         # 返回应答
+
+
+# /user
+class UserInfoView(View):
+    """用户中心-信息页"""
+    def get(self, request):
+        """显示"""
+        # 传入page=user，模板文件根据这个变量，设置链接的class属性
+        return  render(request, 'user_center_info.html', {'page': 'user'})
+
+
+# /user/order
+class UserOrderView(View):
+    """用户中心-订单页"""
+    def get(self, request):
+        """显示"""
+        # 传入page=order，模板文件根据这个变量，设置链接的class属性
+        return  render(request, 'user_center_order.html', {'page': 'order'})
+
+
+# /user/address
+class AddressView(View):
+    """用户中心-地址页"""
+    def get(self, request):
+        """显示"""
+        # 传入page=address，模板文件根据这个变量，设置链接的class属性
+        return render(request, 'user_center_site.html', {'page': 'address'})

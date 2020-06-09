@@ -1,0 +1,79 @@
+<!--终极父模板，首页、注册、登录页面和其他子模板继承自它-->
+<!DOCTYPE html>
+<html lang="en">
+ <!--加载静态文件目录-->
+ {% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <!--各个网页不一样的地方预留一个块，子模板修改该块即可-->
+    <!--网页标题内容块-->
+    <title>{% block title %}{% endblock title %}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/reset.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!--网页顶部引入文件块-->
+    {% block topfiles %}{% endblock topfiles %}
+</head>
+<body>
+    <!--网页顶部欢迎信息块，需要的子模块继承，不需要的子模块继承后修改删除-->
+    <!--顶部登录框-->
+    {% block header_con %}
+    <div class="header_con">
+            <div class="header">
+                <div class="welcome fl">欢迎来到天天生鲜</div>
+                <div class="fr">
+                     <!--用户登录之后，隐藏登录和注册，显示用户信息，通过js来完成 -->
+                    <div class="login_info fl">
+                        欢迎您：<em>张山</em>
+                    </div>
+                    <div class="login_btn fl">
+                        <a href="login.html">登录</a>
+                        <span>|</span>
+                        <a href="register.html">注册</a>
+                    </div>
+                    <div class="user_link fl">
+                        <span>|</span>
+                        <a href="user_center_info.html">用户中心</a>
+                        <span>|</span>
+                        <a href="cart.html">我的购物车</a>
+                        <span>|</span>
+                        <a href="user_center_order.html">我的订单</a>
+                    </div>
+                </div>
+            </div>
+    </div>
+    {% endblock header_con %}
+    <!--搜索框-->
+    {% block search_bar %}
+    <div class="search_bar clearfix">
+        <a href="base.html" class="logo fl"><img src="images/logo.png"></a>
+        <div class="search_con fl">
+            <input type="text" class="input_text fl" name="" placeholder="搜索商品">
+            <input type="button" class="input_btn fr" name="" value="搜索">
+        </div>
+        <div class="guest_cart fr">
+            <a href="cart.html" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl" id="show_count">1</div>
+        </div>
+    </div>
+    {%  endblock search_bar %}
+    <!--各个网页的主题样式肯定不一样，各自编写-->
+    {% block body %}{% endblock body %}
+    <div class="footer">
+        <div class="foot_link">
+            <a href="#">关于我们</a>
+            <span>|</span>
+            <a href="#">联系我们</a>
+            <span>|</span>
+            <a href="#">招聘人才</a>
+            <span>|</span>
+            <a href="#">友情链接</a>
+        </div>
+        <p>CopyRight © 2020 南京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-8888888    宁ICP备8888888号</p>
+    </div>
+    <!--网页底部hml元素块-->
+    {% block bottom %}{% endblock bottom %}
+    <!--网页底部引入文件和js块-->
+    {% block bottomfiles %}{% endblock bottomfiles %}
+</body>
+</html>
