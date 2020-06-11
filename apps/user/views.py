@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from .models import User, Address
+from goods.models import GoodsSKU
 from django.views import View
 # 用户信息加解密的类
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
@@ -17,6 +18,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 # 通过验证的用户退出函数
 from django.contrib.auth import logout
+# 重用redis连接字符串
+from django_redis import get_redis_connection
 
 # Create your views here.
 
@@ -302,11 +305,34 @@ class UserInfoView(LoginRequiredMixin, View):
         # request.user.is_authenticated判断用户是否验证，未登录则为false，登录则为true
 
         # 1.获取用户的个人信息
-
+        user = request.user
+        address = Address.objects.get_default_address(user)
         # 2.获取用户的历史浏览记录
-
+        # from redis import StrictRedis
+        # sr = StrictRedis(host='192.168.6.160', port='6379', db=9)
+        # 但是之前安装的django-redis提供了更方便的方式使用redis,直接重用之前的连接字符串
+        # default就是在settings中定义的redis连接信息的键名
+        con = get_redis_connection('default')
+        # 根据用户id定义redis中存储的历史浏览记录的key
+        history_key = 'history_{}'.format(user.id)
+        # 根据key从redis中获取用户历史浏览记录的前五个商品的id
+        sku_ids = con.lrange(history_key, 0, 4)
+        # # 根据商品id，从mysql数据库中查看商品的具体信息
+        # goods_li = GoodsSKU.objects.filter(id__in=sku_ids)
+        # # 注意从数据库中查找到的数据顺序和存在redis数据库中的顺序不一致
+        # goods_res = []
+        # # 根据用户浏览的顺序遍历，然后再遍历商品的信息，如果某个商品的id等于浏览顺序中的id，即按这个顺序重新排序MySQL中查出的结果
+        # for a_id in sku_ids:
+        #     for goods in goods_li:
+        #         if a_id == goods.id:
+        #             goods_res.append(goods)
+        # 更为简便的方法，遍历用户历史浏览记录的商品id，从数据库获取其对应的具体信息
+        goods_li = []
+        for id in sku_ids:
+            goods = GoodsSKU.objects.get(id=id)
+            goods_li.append(goods)
         # 传入page=user，模板文件根据这个变量，设置链接的class属性
-        return  render(request, 'user_center_info.html', {'page': 'user'})
+        return render(request, 'user_center_info.html', {'page': 'user', 'address': address, 'goods_li': goods_li})
 
 
 # /user/order
@@ -329,10 +355,12 @@ class AddressView(LoginRequiredMixin, View):
         # 获取登录后的用户对象
         user = request.user
         # 根据用户对象，查询该对象的默认收货地址，如果存在收货地址则返回，不存在，则设置为NONE
-        try:
-            address = Address.objects.get(user=user, is_default=True)
-        except Address.DoesNotExist:
-            address = None
+        # 改写地址模型类的管理类，新增获取默认收货地址的方法，避免代码重复
+        # try:
+        #     address = Address.objects.get(user=user, is_default=True)
+        # except Address.DoesNotExist:
+        #     address = None
+        address = Address.objects.get_default_address(user)
         # 传入page=address，模板文件根据这个变量，设置链接的class属性
         return render(request, 'user_center_site.html', {'page': 'address', 'address': address})
 
@@ -355,11 +383,11 @@ class AddressView(LoginRequiredMixin, View):
         # 获取登录后的用户对象
         user = request.user
         # 根据用户对象，查询该对象的默认收货地址，如果存在收货地址则返回，不存在，则设置为NONE
-        try:
-            address = Address.objects.get(user=user, is_default=True)
-        except Address.DoesNotExist:
-            address = None
-
+        # try:
+        #     address = Address.objects.get(user=user, is_default=True)
+        # except Address.DoesNotExist:
+        #     address = None
+        address = Address.objects.get_default_address(user)
         # 根据上述查询的结果，决定新增的地址是否为默认收货地址
         if address:
             is_default = False
