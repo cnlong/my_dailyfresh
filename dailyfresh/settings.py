@@ -189,3 +189,11 @@ EMAIL_FROM = EMAIL_HOST_USER
 # 设置未登录用户访问用户中心，默认跳转路径
 LOGIN_URL = '/user/login'
 
+# 设置Django的文件存储类
+DEFAULT_FILE_STORAGE = 'fdfs.storage.FdfsStorage'
+
+# 设置fdfs使用的client.conf配置
+FDFS_CLIENT_CONF = r"E:\python_project\Django\dailyfresh\fdfs\client.conf"
+
+# 设置fdfs存储上的Nginx地址和端口
+FDFS_URL = 'http://192.168.6.192:9888/'
