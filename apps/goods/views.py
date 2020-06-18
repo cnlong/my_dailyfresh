@@ -18,12 +18,13 @@ def index(request):
         # 获取type 种类下的首页分类商品的图片展示信息
         # 也就是首页主体商品展示块的大标题
         image_banners = IndexTypeGoodsBanner.objects.filter(type=type, display_type=1).order_by('index')
-        # 获取type种类下的首页分类商品的文字膳食信息
+        # 获取type种类下的首页分类商品的文字展示信息
         # 也就是首页主体商品展示块的小标题
         title_banners = IndexTypeGoodsBanner.objects.filter(type=type, display_type=0).order_by('index')
         # 动态给type增加属性，分别保存首页分类商品的图片展示信息和文字展示信息
-        type.image_bannsers = image_banners
-        type.title_bannsers = title_banners
+        # python是动态语言，能够动态添加属性
+        type.image_banners = image_banners
+        type.title_banners = title_banners
 
     # 构建上下文信息
     context = {'types': types,

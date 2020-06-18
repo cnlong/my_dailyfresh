@@ -103,6 +103,9 @@ class IndexTypeGoodsBanner(BaseModel):
         verbose_name = "主页分类展示商品"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return str(self.sku)
+
 
 class IndexPromotionBanner(BaseModel):
     """首页促销活动模型类"""
