@@ -5,6 +5,7 @@ from ckeditor.fields import RichTextField
 # 导入基类
 from db.base_model import BaseModel
 
+
 # Create your models here.
 
 class GoodsType(BaseModel):
