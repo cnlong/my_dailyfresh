@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import *
+from django.core.cache import cache
 # Register your models here.
+
 
 class BaseModelAdmin(admin.ModelAdmin):
     """新建一个类，继承自模型管理类，重写保存和删除方法"""
@@ -13,11 +15,16 @@ class BaseModelAdmin(admin.ModelAdmin):
         from celery_tasks.tasks import generate_static_index_html
         generate_static_index_html.delay()
 
+        # 清除首页缓存的数据
+        cache.delete('index_page')
+
     def delete_model(self, request, obj):
         """删除表中的数据时调用"""
         super().delete_model(request, obj)
         from celery_tasks.tasks import generate_static_index_html
         generate_static_index_html.delay()
+        # 清除首页缓存的数据
+        cache.delete('index_page')
 
 
 # 对每个需要在首页生成数据的模型类，新建模型管理类，重写删除和保存的方法
