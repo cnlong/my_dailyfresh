@@ -1,8 +1,6 @@
 from celery import Celery
 from django.conf import settings
 from django.core.mail import send_mail
-from goods.models import GoodsType, IndexGoodsBanner,IndexPromotionBanner,IndexTypeGoodsBanner
-from django_redis import get_redis_connection
 from django.template import loader, RequestContext
 
 # worker端的环境初始化操作，任务发出者无需操作
@@ -10,6 +8,8 @@ import os
 import django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'dailyfresh.settings')
 django.setup()
+from goods.models import GoodsType, IndexGoodsBanner, IndexPromotionBanner,IndexTypeGoodsBanner
+from django_redis import get_redis_connection
 
 # 创建一个celery类的实例对象，名称自行设定,broker配置redis
 app = Celery('celery_tasks.tasks', broker='redis://192.168.6.160:6379/8')
@@ -65,5 +65,5 @@ def generate_static_index_html():
     static_index_html = temp.render(context)
     # 3.将渲染后的模板生成一个静态页面文件
     save_path = os.path.join(settings.BASE_DIR, 'static/index1.html')
-    with open(save_path, 'w') as f:
+    with open(save_path, 'w', encoding='utf-8') as f:
         f.write(static_index_html)
