@@ -4,6 +4,7 @@ from .models import *
 from django_redis import get_redis_connection
 from django.views import View
 from django.core.cache import cache
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -53,6 +54,7 @@ class IndexView(View):
         return render(request, 'index.html', context)
 
 
+# /goods/商品id
 class DetailView(View):
     """详情页"""
     def get(self, request, goods_id):
@@ -105,3 +107,98 @@ class DetailView(View):
         }
 
         return render(request, 'detail.html', context)
+
+
+# /list/种类id/页码?sort=排序方式
+class ListView(View):
+    """列表页"""
+    def get(self, request, type_id, page):
+        # 根据种类id，查找其对应的种类
+        # 但是存在没有的种类的情况
+        try:
+            type = GoodsType.objects.get(id=type_id)
+        except Exception as e:
+            # 不存在的种类，直接跳转到首页
+            return redirect(reverse('goods:index'))
+        # 雪碧图展示的商品种类数据
+        types = GoodsType.objects.all()
+        # 根据种类类型，获取商品信息
+        # 并且进行排序
+        # 默认排序方式，sort = default
+        # 价格排序，sort = price
+        # 人气排序，按照销量排序，sort = hot
+        # 排序是通过url参数传入的，需要通过request获取
+        sort = request.GET.get('sort')
+        if sort == 'price':
+            skus = GoodsSKU.objects.filter(type=type).order_by('price')
+        elif sort == 'hot':
+            # - 表示降序，由高到低
+            skus = GoodsSKU.objects.filter(type=type).order_by('-sales')
+        else:
+            # 未传入排序的方式，则以默认的方式排序
+            sort = 'default'
+            skus = GoodsSKU.objects.filter(type=type).order_by('-id')
+
+        # 对获取到的数据进行分页,每页显示一个数据
+        paginator = Paginator(skus, 1)
+        # 获取第Page页的内容
+        # 不存在的页码，返回至第一页
+        try:
+            page = int(page)
+        except Exception as e:
+            page = 1
+
+        # 大于总页码的页码，也返回至第一页
+        if page > paginator.num_pages:
+            page = 1
+
+        # 根据page页获取当前页的展示page对象
+        skus_page = paginator.page(page)
+
+        # 获取新品展示块的信息
+        new_skus = GoodsSKU.objects.filter(type=type).order_by('-create_time')[:2]
+
+        # 获取用户购物车中商品的数目
+        user = request.user
+        cart_count = 0
+        if user.is_authenticated:
+            # 用户已登录
+            conn = get_redis_connection('default')
+            cart_key = 'cart_%d' % user.id
+            cart_count = conn.hlen(cart_key)
+        # 进行页码的控制，页面上最多显示5个页码
+        # 通过页码的索引范围，传入到模板，模板循环这个范围，组织翻页按钮
+        # 1.总页数小于5页，页面上显示所有页码
+        # 2.如果当前页是前3页，显示1-5页
+        # 3.如果当前页是后3页，显示后5页
+        # 4.其他情况，显示当前页、当前页的前2页、当前页的后2页
+        # 后三种情况保证返回的页码列表数量为5即可
+        num_pages = paginator.num_pages
+        if num_pages < 5:
+            # 显示全部页码
+            # 所有页码的取值范围
+            # 例如num_pages=3，那么就显示(1,4)列表中的翻页索引
+            pages = range(1, num_pages+1)
+        elif page <= 3:
+            # 当前页为前3页
+            # 例如num_pages=10，page=3, 那么就显示(1,6)列表中的翻页索引
+            pages = range(1, 6)
+        elif num_pages - page <=2:
+            # 后三页，例如，8 ，9,10页
+            # 例如num_pages=10，page=9, 那么就显示(6,11)列表中的翻页索引
+            pages = range(num_pages-4, num_pages+1)
+        else:
+            # 例如num_pages=10，page=5, 那么就显示(3,8)列表中的翻页索引
+            pages = range(page-2, page+3)
+
+        # 组织模板上下文
+        context = {
+            'type': type,
+            'types': types,
+            'new_skus': new_skus,
+            'cart_count': cart_count,
+            'skus_page': skus_page,
+            'sort': sort,
+            'pages': pages
+        }
+        return render(request, 'list.html', context)
