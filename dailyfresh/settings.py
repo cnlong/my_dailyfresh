@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'cart',
     'goods',
     'order',
+    'haystack',  # 全文检索框架
     'tinymce',
     'ckeditor',
 ]
@@ -229,3 +230,21 @@ CKEDITOR_CONFIGS = {
         'extraPlugins': ','.join(['codesnippet']),
     }
 }
+
+# 全文检索框架的配置
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        # 使用whoosh引擎
+        # 在haysatck安装包的安装目录下
+        # 'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        # 索引的存放路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index')
+    }
+}
+
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# 索引分页的单位为1，即1页显示一个商品信息
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10

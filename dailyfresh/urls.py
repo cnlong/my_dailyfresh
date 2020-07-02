@@ -25,4 +25,5 @@ urlpatterns = [
     path('order/', include(('order.urls', 'order'), namespace='order')),
     path('', include(('goods.urls', 'goods'), namespace='goods')),  # 首页
     # re_path(r'^', include(('goods.urls', 'goods'), namespace='goods')),
+    path('search/', include('haystack.urls')),  # 全文搜索框架
 ]

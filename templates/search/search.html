@@ -1,0 +1,52 @@
+{% extends 'base_detail_list.html' %}
+    {% block title %}天天生鲜-商品搜索列表{% endblock title %}
+{% block main_content %}
+<!--面包屑菜单-->
+    <div class="breadcrumb">
+        <a href="#">{{ query }}</a>
+        <span>></span>
+        <a href="#">搜索结果如下：</a>
+    </div>
+
+    <!--商品列表-->
+    <!--因为父级框没有设置高度，子级框也没用设置高度，需要清除浮动子元素撑起父级的高度
+    否则，这个区域虽然在浏览器页面中显示，但是没有高度，与其父级框同级的div，会占用现在
+    这个位置，造成页面错乱
+    -->
+    <div class="main_wrap clearfix">
+
+            <ul class="goods_type_list clearfix">
+                {% for item in page %}
+                <li>
+                    <a href="{% url 'goods:detail' item.object.id %}"><img src="{{ item.object.image.url }}"></a>
+                    <h4><a href="{% url 'goods:detail' item.object.id %}">{{ item.object.name }}</a></h4>
+                    <div class="operate">
+                        <span class="prize">￥{{ item.object.price }}</span>
+                        <span class="unit">{{ item.object.price }}/{{ item.object.unite }}</span>
+                        <a href="#" class="add_goods" title="加入购物车"></a>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+            <div class="pagenation">
+                {% if page.has_previous %}
+                    <!--注意此处搜索url的构建。默认为/search?q=搜索关键字，如果需要指定页码，需要传入&page=页码-->
+                <a href="/search?q={{ query }}&page={{ page.previous_page_number }}"><上一页</a>
+                {% endif %}
+                <!--根据Page对象获取paginator对象，然后获取总的页码范围-->
+                {% for pindex in paginator.page_range %}
+                    <!--skus_page.number获取当前页的页码-->
+                    {% if pindex == page.number %}
+                        <!--当前页-->
+                        <a href="/search?q={{ query }}&page={{ pindex }}" class="active">{{ pindex }}</a>
+                    {% else %}
+                        <!--非当前页-->
+                        <a href="/search?q={{ query }}&page={{ pindex }}">{{ pindex }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+                <a href="/search?q={{ query }}&page={{ page.next_page_number }}">下一页></a>
+                {% endif %}
+            </div>
+    </div>
+{% endblock main_content %}
